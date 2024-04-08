@@ -1,0 +1,94 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "NameSpaceAllow",
+            "Effect": "Allow",
+            "Action": [
+                "s3:CreateJob",
+                "s3:Describe*",
+                "s3:GetAccelerate*",
+                "s3:GetAccess*",
+                "s3:GetBucket*",
+                "s3:GetEncryption*",
+                "s3:GetIntelligent*",
+                "s3:GetInventory*",
+                "s3:GetLifecycle*",
+                "s3:GetMetrics*",
+                "s3:GetMultiRegion*",
+                "s3:GetReplication*",
+                "s3:InitiateReplication",
+                "s3:PutAccelerate*",
+                "s3:PutAccess*",
+                "s3:PutEncryption*",
+                "s3:PutIntelligent*",
+                "s3:PutInventory*",
+                "s3:PutLifecycle*",
+                "s3:PutMetrics*",
+                "s3:PutMultiRegion*",
+                "s3:PutReplication*",
+                "s3:PutObject*",
+                "s3:Replicate*",
+                "s3:RestoreObject",
+                "s3:Update*",
+                "s3:SubmitMultiRegion*"
+            ],
+            "Resource": [
+                "arn:aws:s3:*:*:accesspoint/cust-${aws:PrincipalTag/cust:application.ci}-*",
+                "arn:aws:s3::*:accesspoint/cust-mr-${aws:PrincipalTag/cust:application.ci}-*",
+                "arn:aws:s3-object-lambda:*:*:accesspoint/cust-${aws:PrincipalTag/cust:application.ci}-*",
+                "arn:aws:s3:::cust-${aws:PrincipalTag/cust:application.ci}-*"
+            ],
+            "Condition":{
+                "StringEquals": {
+                    "s3:ResourceAccount": "<ACCOUNTID>"
+                }
+            }
+        },
+        {
+            "Sid": "NonNameSpaceAllow",
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListAccess*",
+                "s3:ListAll*",
+                "s3:ListMultiRegion*",
+                "s3:ListStorageLens*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "RequestTagAllow",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutStorageLensConfiguration"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:RequestTag/cust:application.ci": "${aws:PrincipalTag/cust:application.ci}"
+                },
+                "ForAnyValue:StringEquals": {
+                    "aws:TagKeys": [
+                        "cust:application.ci",
+                        "local:*"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "ResourceTagAllow",
+            "Effect": "Allow",
+            "Action": [
+                "s3:DeleteStorageLens*",
+                "s3:GetStorageLens*"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/cust:application.ci": "${aws:PrincipalTag/cust:application.ci}"
+                }
+            }
+        }
+      
+    ]
+}

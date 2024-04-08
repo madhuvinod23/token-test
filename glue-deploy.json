@@ -1,0 +1,141 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "ResourceTagAllow",
+			"Effect": "Allow",
+			"Action": [
+				"glue:BatchDeleteConnection",
+				"glue:BatchGetBlueprints",
+				"glue:BatchGetCrawlers",
+				"glue:BatchGetCustomEntityTypes",
+				"glue:BatchGetDevEndpoints",
+				"glue:BatchGetJobs",
+				"glue:BatchGetTriggers",
+				"glue:BatchGetWorkflows",
+				"glue:DeleteBlueprint",
+				"glue:DeleteConnection",
+				"glue:DeleteCrawler",
+				"glue:DeleteCustomEntityType",
+				"glue:DeleteDataQualityRuleset",
+				"glue:DeleteRegistry",
+				"glue:DeleteSchema",
+				"glue:DeleteSession",
+				"glue:DeleteTrigger",
+				"glue:DeleteWorkflow",
+				"glue:GetBlueprint",
+				"glue:GetBlueprintRun",
+				"glue:GetBlueprintRuns",
+				"glue:GetConnection",
+				"glue:GetConnections",
+				"glue:GetCrawler",
+				"glue:GetCustomEntityType",
+				"glue:GetDevEndpoint",
+				"glue:GetJob",
+				"glue:GetMLTaskRun",
+				"glue:GetMLTransform",
+				"glue:GetRegistry",
+				"glue:GetSchema",
+				"glue:GetSession",
+				"glue:GetStatement",
+				"glue:GetTags",
+				"glue:GetTrigger",
+				"glue:GetWorkflow",
+				"glue:NotifyEvent",
+				"glue:PutSchemaVersionMetadata",
+				"glue:PutWorkflowRunProperties",
+				"glue:QuerySchemaVersionMetadata",
+				"glue:RegisterSchemaVersion",
+				"glue:RemoveSchemaVersionMetadata",
+				"glue:UpdateBlueprint",
+				"glue:UpdateConnection",
+				"glue:UpdateCrawler",
+				"glue:UpdateDevEndpoint",
+				"glue:UpdateJob",
+				"glue:UpdateJobFromSourceControl",
+				"glue:UpdateMLTransform",
+				"glue:UpdateRegistry",
+				"glue:UpdateSchema",
+				"glue:UpdateSourceControlFromJob",
+				"glue:UpdateTrigger",
+				"glue:UpdateWorkflow"
+			],
+			"Resource": "*",
+			"Condition": {
+				"StringEquals":{
+					"aws:ResourceTag/cust:application.ci": "${aws:PrincipalTag/cust:application.ci}"
+				}
+			}
+		},
+		{
+			"Sid": "RequestTagAllow",
+			"Effect": "Allow",
+			"Action": [
+                "glue:CreateBluePrint",
+                "glue:CreateConnection",
+                "glue:CreateCrawler",
+                "glue:CreateCustomEntityType",
+                "glue:CreateDataQualityRuleset",
+                "glue:CreateDevEndpoint",
+                "glue:CreateJob",
+                "glue:CreateMLTransform",
+                "glue:CreateRegistry",
+				"glue:CreateSchema",
+				"glue:CreateSession",
+                "glue:CreateTrigger",
+                "glue:CreateWorkflow"
+
+			],
+			"Resource": "*",
+			"Condition": {
+				"StringEquals":{
+					"aws:RequestTag/cust:application.ci": "${aws:PrincipalTag/cust:application.ci}"
+				},
+				"ForAllValues:StringLike": {
+					"aws:TagKeys": [
+						"cust:application.ci",
+						"local:*"
+					]
+				}
+			}
+		},
+		{
+			"Sid": "NonNameSpaceAllow",
+			"Effect": "Allow",
+			"Action": [
+				"glue:CreateScript",
+				"glue:CreateSecurityConfiguration",
+				"glue:CheckSchemaVersionValidity",
+				"glue:DeleteSecurityConfiguration",
+				"glue:GetClassifier*",
+				"glue:GetCrawlerMetrics",
+				"glue:GetCrawlers",
+				"glue:GetDevEndpoints",
+				"glue:GetJobBookmark",
+				"glue:GetJobs",
+				"glue:GetMapping",
+				"glue:GetPlan",
+				"glue:GetSecurityConfiguration*",
+				"glue:GetTriggers"
+			],
+			"Resource": "*"
+		},		{
+			"Sid": "NameSpaceAllow",
+			"Effect": "Allow",
+			"Action": [
+                "glue:CreateC*",
+				"glue:CreateD*",
+				"glue:CreateP*",
+				"glue:CreateS*",
+				"glue:CreateT*",
+                "glue:Delete*",
+                "glue:Update*"
+			],
+            "Resource": [
+				"arn:aws:glue:*:*:catalog",
+				"arn:aws:glue:*:*:database/cust-${aws:PrincipalTag/cust:application.ci}-*",
+				"arn:aws:glue:*:*:table/cust-${aws:PrincipalTag/cust:application.ci}-*" 
+				]
+		}
+    ]
+}

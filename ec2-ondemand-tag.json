@@ -1,0 +1,48 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateTags"
+            ],
+            "Resource": [
+                "arn:aws:ec2:*:*:volume/*",
+                "arn:aws:ec2:*:*:instance/*"
+            ],
+            "Condition": {
+                "StringEqualsIfExists": {
+                    "aws:RequestTag/cust:application.ci": "${aws:PrincipalTag/cust:application.ci}",
+                    "aws:ResourceTag/cust:application.ci": "${aws:PrincipalTag/cust:application.ci}"
+                },
+                "ForAllValues:StringLike": {
+                    "aws:TagKeys": [
+                        "cust:application",
+                        "cust:application.short_name",
+                        "cust:application.ci",
+                        "local:*"
+                    ]
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DeleteTags"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/cust:application.ci": "${aws:PrincipalTag/cust:application.ci}"
+                },
+                "ForAllValues:StringNotEquals": {
+                    "aws:TagKeys": [
+                        "cust:application",
+                        "cust:application.short_name",
+                        "cust:application.ci"
+                    ]
+                }
+            }
+        }
+    ]
+}

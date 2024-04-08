@@ -1,0 +1,17 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+		{
+			"Sid": "TagAndUntag",
+			"Effect": "Allow",
+			"Action": [
+                "dynamodb:Tag*",
+                "dynamodb:Untag*"
+			],
+			"Resource": [
+				"arn:aws:dynamodb:*:*:table/cust-${aws:PrincipalTag/cust:application.ci}-*",
+				"arn:aws:dynamodb:*:*:global-table/cust-${aws:PrincipalTag/cust:application.ci}-*"
+			]
+        }
+    ]
+}
